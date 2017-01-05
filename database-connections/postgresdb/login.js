@@ -10,8 +10,8 @@ function login(username, password, callback) {
   username = username || '';
 
   var body, IDP_ENDPOINT;
-  var emailformat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
-  if (username.match(emailformat)) {
+  
+  if (/^([\w-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/.test(username)) {
 
     IDP_ENDPOINT = configuration.ENDPOINT_LOCAL + "/api/v1/loginByEmail";
 
