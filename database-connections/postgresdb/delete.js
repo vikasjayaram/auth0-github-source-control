@@ -14,10 +14,6 @@ function remove (id, callback) {
       if (err) {
         return callback(err);
       }
-      if (response.statusCode != 200) {
-        return callback(new Error('Forbidden'));
-      }
-      console.log(body);
       console.log('@@@ remove - end @@@');
       callback(null);
   });
