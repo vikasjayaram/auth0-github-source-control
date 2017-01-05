@@ -10,7 +10,7 @@ function login(username, password, callback) {
   username = username || '';
 
   var body, IDP_ENDPOINT;
-  
+
   if (/^([\w-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/.test(username)) {
 
     IDP_ENDPOINT = configuration.ENDPOINT_LOCAL + "/api/v1/loginByEmail";
@@ -75,7 +75,7 @@ function login(username, password, callback) {
       user_id: user.id,
       nickname: user.nickname,
       email: user.email,
-      //email_verified: user.email_verified == 'true' ? true : false,
+      email_verified: user.email_verified == 'true' ? true : false,
       user_metadata: {
         employee_id: user.employee_id,
         company_code: user.company_code
