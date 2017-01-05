@@ -240,15 +240,8 @@
   <script>
     // Decode utf8 characters properly
     var config = JSON.parse(decodeURIComponent(escape(window.atob('@@config@@'))));
-    /*
-    var config = {
-      clientID: 'zdyaKxNREGgZ1Cgim0CQJvE43zfCNCjB',
-      auth0Domain: 'vjayaram-demo.auth0.com',
-      callbackURL: 'http://localhost:3000'
-    }*/
     $( document ).ready(function() {
-        console.log(JSON.stringify(config));
-        var connection = config.connection ? config.connection : 'PostgredDB';
+        var connection = config.connection ? config.connection : 'postgresdb';
         var AUTH0_CLIENT_ID=config.clientID;
         var AUTH0_DOMAIN=config.auth0Domain;
         var AUTH0_CALLBACK_URL=config.callbackURL;
@@ -257,7 +250,10 @@
           clientID: AUTH0_CLIENT_ID,
           redirectUri: AUTH0_CALLBACK_URL
         });
-
+        var authenticate = new auth0.Authentication({
+          domain: AUTH0_DOMAIN,
+          clientID: AUTH0_CLIENT_ID
+        });
         var $formLogin = $('#login-form');
         var $formLost = $('#lost-form');
         var $formRegister = $('#register-form');
@@ -292,7 +288,6 @@
                         var url = config.callbackURL + '?client=' + AUTH0_CLIENT_ID + '&#access_token=' + authResult.accessToken +
                         '&id_token=' + authResult.idToken + '&expires_in=' + authResult.expiresIn + '&scope=' +
                         authResult.scope + '&token_type=' +authResult.tokenType;
-                        console.log(url);
                         window.location.href = url;
                       }
                     });
@@ -300,6 +295,13 @@
                     break;
                 case "lost-form":
                     var $ls_email=$('#lost_email').val();
+                    authenticate.dbConnection.changePassword(options, function (err, result) {
+                      if (err) {
+                          msgChange($('#div-lost-msg'), $('#icon-lost-msg'), $('#text-lost-msg'), "error", "glyphicon-remove", "Something went wrong");
+                      } else {
+                          msgChange($('#div-lost-msg'), $('#icon-lost-msg'), $('#text-lost-msg'), "success", "glyphicon-ok", "We've just sent you an email to reset your password.");
+                      }
+                    });
                     return false;
                     break;
                 case "register-form":
